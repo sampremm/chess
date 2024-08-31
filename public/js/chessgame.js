@@ -1,16 +1,15 @@
 const socket = io(); 
 const chess = new Chess(); 
 const boardElement = document.querySelector(".chessboard");
-
 let draggedPiece = null;
 let sourceSquare = null;
 let playerRole = null;
 
 const renderBoard = () => {
     const board = chess.board(); 
-    // boardElement.innerHTML = ""; // Ensure the board is cleared before rendering new content
-    
+    // boardElement.innerHTML = " "; // Ensure the board is cleared before rendering new content
     board.forEach((row, rowIndex) => {
+
         row.forEach((square, squareIndex) => {
             const squareElement = document.createElement("div");
             squareElement.classList.add(
@@ -26,7 +25,7 @@ const renderBoard = () => {
                     "piece",
                     square.color === "w" ? "white" : "black"
                 );
-                pieceElement.innerText = getPieceCode(square.type);
+                pieceElement.innerText = " ";
                 pieceElement.draggable = playerRole === square.color;
 
                 pieceElement.addEventListener("dragstart", (e) => {
@@ -58,16 +57,20 @@ const renderBoard = () => {
                     };
                     handleMove(sourceSquare, targetSquare);
                 }
+                boardElement.appendChild(squareElement);
 
-            boardElement.appendChild(squareElement);
-            });
-          
+      
+            }); 
         });
     });
 };
 
-const handleMove = (source, target) => {
-    // Logic for handling moves
+const handleMove = () => {
+    constmove={
+        from:`${String.fromCharCord(97+source.col)}${8 -source.row})`,
+        to:`${String.fromCharCord(97+target.col)}${8 -target.row})`,
+        promotion:"q"
+    }
 };
 
 const getPieceCode = (type) => {
@@ -81,5 +84,8 @@ const getPieceCode = (type) => {
         default: return '';
     }
 };
-
+socket.on("playerRole",()=>{
+    playerRole=role;
+    renderBoard()
+});
 renderBoard();
