@@ -1,4 +1,4 @@
-
+/* Container styles */
 .container {
     width: 100%;
     height: 100vh;
@@ -8,9 +8,70 @@
     justify-content: center;
 }
 
-
+/* Box styles */
 .box {
-    width: 24rem; 
-    height: 24rem;
+    width: 24rem; /* w-96 */
+    height: 24rem; /* h-96 */
     background-color: #f87171; /* bg-red-400 */
+}
+
+/* Chessboard styles */
+.chessboard {
+    display: grid;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    grid-template-rows: repeat(8, minmax(0, 1fr));
+    width: 400px;
+    height: 400px;
+    transform: rotate(0deg);
+}
+
+/* Square styles */
+.square {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Light and dark square colors */
+.square.light {
+    background-color: #f0d9b5;
+}
+
+.square.dark {
+    background-color: #b58863;
+}
+
+/* Chess piece styles */
+.piece {
+    font-size: 36px;
+    cursor: pointer;
+}
+
+/* White pieces */
+.piece.white {
+    color: white;
+    filter: drop-shadow(0 0 2px rgba(0, 0, 0, 1));
+}
+
+/* Black pieces */
+.piece.black {
+    color: black;
+}
+
+/* Piece being dragged */
+.piece.draggable {
+    cursor: grab;
+}
+
+.dragging {
+    opacity: 0.5;
+}
+
+/* Rotate pieces for black player */
+.flipped {
+    transform: rotate(180deg);
+}
+
+.flipped .piece {
+    transform: rotate(180deg);
 }
