@@ -1,4 +1,3 @@
-/* Full-screen container for the chessboard */
 .chessboard-container {
     width: 100%;
     height: 100vh;
@@ -8,7 +7,6 @@
     justify-content: center;
 }
 
-/* Chessboard */
 .chessboard {
     width: 24rem; /* Equivalent to w-96 */
     height: 24rem; /* Equivalent to h-96 */
@@ -19,7 +17,6 @@
     transform: rotate(0deg);
 }
 
-/* Chessboard square dimensions and colors */
 .square {
     display: flex;
     align-items: center;
@@ -34,7 +31,6 @@
     background-color: #b58863;
 }
 
-/* Styling for the chess pieces */
 .piece {
     font-size: 36px;
     cursor: pointer;
@@ -49,17 +45,14 @@
     color: black;
 }
 
-/* Draggable pieces */
 .piece.draggable {
     cursor: grab;
 }
 
-/* When a piece is being dragged */
 .dragging {
     opacity: 0.5;
 }
 
-/* Rotate board and pieces for the black player */
 .flipped {
     transform: rotate(180deg);
 }

@@ -1,21 +1,27 @@
-const socket = io(); 
-const chess = new Chess(); 
+const socket = io();
+const chess = new Chess();
 const boardElement = document.querySelector(".chessboard");
 let draggedPiece = null;
 let sourceSquare = null;
 let playerRole = null;
 
 const renderBoard = () => {
-    const board = chess.board(); 
-    boardElement.innerHTML = ""; // Clear board before rendering
+    const board = chess.board();
+    boardElement.innerHTML = "";
+
+    if (playerRole === "b") {
+        boardElement.classList.add("flipped");
+    } else {
+        boardElement.classList.remove("flipped");
+    }
 
     board.forEach((row, rowIndex) => {
         row.forEach((square, colIndex) => {
             const squareElement = document.createElement("div");
             squareElement.classList.add(
-                "square", 
+                "square",
                 (rowIndex + colIndex) % 2 === 0 ? "light" : "dark"
-            ); 
+            );
             squareElement.dataset.row = rowIndex;
             squareElement.dataset.col = colIndex;
 
@@ -26,7 +32,6 @@ const renderBoard = () => {
                     square.color === "w" ? "white" : "black"
                 );
                 pieceElement.innerHTML = getPieceCode(square.type);
-
                 pieceElement.draggable = playerRole === square.color;
 
                 pieceElement.addEventListener("dragstart", (e) => {
@@ -71,34 +76,39 @@ const handleMove = (source, target) => {
         to: `${String.fromCharCode(97 + target.col)}${8 - target.row}`,
         promotion: "q"
     };
-
-    // Send move to server or update game state locally
-    console.log("Move:", move);
-
-    // Update chess.js board state
-    const result = chess.move(move);
-    if (result) {
-        renderBoard(); // Update board after move
-    }
+    socket.emit("move", move);
 };
 
 const getPieceCode = (type) => {
     switch(type) {
-        case 'p': return '♙'; // Pawn
-        case 'r': return '♖'; // Rook
-        case 'n': return '♘'; // Knight
-        case 'b': return '♗'; // Bishop
-        case 'q': return '♕'; // Queen
-        case 'k': return '♔'; // King
+        case 'p': return '♙';
+        case 'r': return '♖';
+        case 'n': return '♘';
+        case 'b': return '♗';
+        case 'q': return '♕';
+        case 'k': return '♔';
         default: return '';
     }
 };
 
-// Assuming socket.io emits "playerRole" event with the role (w or b)
 socket.on("playerRole", (role) => {
     playerRole = role;
     renderBoard();
 });
 
-// Initial board rendering
+socket.on("spectatorRole", () => {
+    playerRole = null;
+    renderBoard();
+});
+
+socket.on("boardState", (fen) => {
+    chess.load(fen);
+    renderBoard();
+});
+
+socket.on("move", (move) => {
+    chess.move(move);
+    renderBoard();
+});
+
 renderBoard();
